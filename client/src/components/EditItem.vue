@@ -3,11 +3,13 @@
     <h1>Add item</h1>
     <input v-model="name"/> <br/>
     <textarea v-model="description"/> <br/>
-    <button @click="addItem()">Add item</button> <br/>
+    <button @click="addItem()">Update item</button> <br/>
     <span>{{status}}</span>
 
     <h2>Upload images</h2>
     <ImageUploader @uploaded="addImage"/>
+
+    <h2 v-if="status === 'downloading'">Downloading ...</h2>
   </div>
 </template>
 
@@ -18,13 +20,23 @@ export default {
   components: {
     ImageUploader,
   },
+  props: ['item_id'],
   data () {
     return {
       name: '',
       description: '',
-      status: 'idle',
+      status: 'downloading',
       images: [],
     }
+  },
+  mounted () {
+    fetch('/api/item/' + this.item_id + '.json')
+      .then(r => r.json())
+      .then(j => {
+        this.name = j.name
+        this.description = j.description
+        this.status = 'downloaded'
+      })
   },
   methods: {
     addItem () {
@@ -33,7 +45,7 @@ export default {
       let formData = new FormData()
       formData.append('name', this.name)
       formData.append('description', this.description)
-      fetch('/api/add-item', {
+      fetch('/api/item/' + this.item_id + '/update', {
         method: 'POST',
         body: formData,
       })

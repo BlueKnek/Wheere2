@@ -52,23 +52,45 @@ def upload_image():
         return jsonify({}), 500
 
 
+def get_or_default(dict, key, default):
+    if key in dict:
+        return dict[key]
+    else:
+        return default
+
+
+def item_to_json(item):
+    return {
+        'item_id': item.doc_id,
+        'name': get_or_default(item, 'name', ''),
+        'description': get_or_default(item, 'description', ''),
+    }
+
+
 @app.route('/api/data.json')
 def data_json():
     return jsonify({
         'hello': 'world',
-        'items': items.all(),
+        'items': [item_to_json(i) for i in items.all() if 'filled' in i],
     })
 
 
-@app.route('/api/add-item', methods=['POST'])
-def set_test():
-    name = request.form['name']
-    description = request.form['description']
-
-    items.insert({
-        'name': name,
-        'description': description,
-    })
-    return 'Inserted '+name
+@app.route('/api/new-item', methods=['POST'])
+def new_item():
+    item_id = items.insert({})
+    return jsonify({'item_id': item_id})
 
 
+@app.route('/api/item/<int:item_id>/update', methods=['POST'])
+def update_item(item_id):
+    items.update({
+        'name': request.form['name'],
+        'description': request.form['description'],
+        'filled': True,
+    }, doc_ids=[item_id])
+    return jsonify({})
+
+
+@app.route('/api/item/<int:item_id>.json')
+def item_json(item_id):
+    return jsonify(item_to_json(items.get(doc_id=item_id)))
