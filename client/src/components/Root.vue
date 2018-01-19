@@ -8,7 +8,7 @@
 <script>
 export default {
   data () {
-    fetch('/data.json')
+    fetch('/api/data.json')
       .then(r => r.json())
       .then(j => { this.data = j })
     return {

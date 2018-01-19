@@ -6,7 +6,7 @@ db = TinyDB('db.json')
 items = db.table('items')
 
 
-@app.route('/data.json')
+@app.route('/api/data.json')
 def data_json():
     return jsonify({
         'hello': 'world',
@@ -14,7 +14,7 @@ def data_json():
     })
 
 
-@app.route('/add-item/<string:name>')
+@app.route('/api/add-item/<string:name>')
 def set_test(name):
     items.insert({
         'name': name,
