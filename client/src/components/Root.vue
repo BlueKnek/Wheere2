@@ -1,13 +1,19 @@
 <template>
   <div class="root">
     <h1>Wheere2</h1>
+    {{data}}
   </div>
 </template>
 
 <script>
 export default {
   data () {
-    return {}
+    fetch('/data.json')
+      .then(r => r.json())
+      .then(j => { this.data = j })
+    return {
+      data: false
+    }
   }
 }
 </script>
