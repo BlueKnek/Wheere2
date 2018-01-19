@@ -12,9 +12,9 @@ export default {
       .then(r => r.json())
       .then(j => { this.data = j })
     return {
-      data: false
+      data: false,
     }
-  }
+  },
 }
 </script>
 
