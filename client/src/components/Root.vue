@@ -1,7 +1,8 @@
 <template>
   <div class="root">
     <h1>Wheere2</h1>
-    {{data}}
+    <router-link to="/AddItem">Add item</router-link>
+    <div>{{data}}</div>
   </div>
 </template>
 

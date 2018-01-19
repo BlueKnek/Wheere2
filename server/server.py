@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from tinydb import TinyDB, Query
 
 app = Flask(__name__)
@@ -14,10 +14,14 @@ def data_json():
     })
 
 
-@app.route('/api/add-item/<string:name>')
-def set_test(name):
+@app.route('/api/add-item', methods=['POST'])
+def set_test():
+    name = request.form['name']
+    description = request.form['description']
+
     items.insert({
         'name': name,
+        'description': description,
     })
     return 'Inserted '+name
 
