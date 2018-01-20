@@ -28,7 +28,7 @@ export default {
         this.newTag = ''
       }
       if (event.keyCode === 8 && event.target.selectionStart === 0) {
-        this.removeTag(this.value[this.value.length-1])
+        this.removeTag(this.value[this.value.length - 1])
       }
     },
   },
