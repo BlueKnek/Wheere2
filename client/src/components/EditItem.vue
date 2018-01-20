@@ -32,7 +32,7 @@ export default {
       name: '',
       description: '',
       status: 'downloading',
-      tags: ['test1', 'abc2', 'lol3'],
+      tags: [],
       images: [],
     }
   },
@@ -40,7 +40,9 @@ export default {
     fetch('/api/item/' + this.item_id + '.json')
       .then(r => r.json())
       .then(j => {
+        console.log(j)
         this.name = j.name
+        this.tags = j.tags
         this.description = j.description
         this.images = j.images.map(i => ({
           filename: i,
@@ -59,6 +61,7 @@ export default {
         method: 'POST',
         body: JSON.stringify({
           name: this.name,
+          tags: this.tags,
           description: this.description,
           images: this.images.map(i => i.filename),
         }),

@@ -63,6 +63,7 @@ def item_to_json(item):
     return {
         'item_id': item.doc_id,
         'name': get_or_default(item, 'name', ''),
+        'tags': get_or_default(item, 'tags', []),
         'description': get_or_default(item, 'description', ''),
         'images': get_or_default(item, 'images', []),
     }
@@ -86,6 +87,7 @@ def new_item():
 def update_item(item_id):
     items.update({
         'name': request.json['name'],
+        'tags': request.json['tags'],
         'description': request.json['description'],
         'images': request.json['images'],
         'filled': True,
