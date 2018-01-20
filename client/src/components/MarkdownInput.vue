@@ -16,7 +16,10 @@ export default {
       el: this.$refs.editor,
       events: {
         change: () => {
-          this.$emit('input', this.editor.getMarkdown())
+          let newVal = this.editor.getMarkdown()
+          if (this.value !== newVal) {
+            this.$emit('input', newVal)
+          }
         },
       },
     })
