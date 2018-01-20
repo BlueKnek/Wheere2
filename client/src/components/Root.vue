@@ -1,17 +1,19 @@
 <template>
   <div class="root">
-    <h1>Wheere2</h1>
-    <router-link to="/new-item">New item</router-link>
-    <ItemCard v-for="item in data.items" :item="item" :key="item.item_id"/>
-    <div>{{data}}</div>
+    <Header/>
+    <div class="page">
+      <ItemCard v-for="item in data.items" :item="item" :key="item.item_id"/>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from './Header'
 import ItemCard from './ItemCard'
 
 export default {
   components: {
+    Header,
     ItemCard,
   },
   data () {
@@ -25,6 +27,9 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .page {
+    margin: auto;
+    max-width: 30rem;
+  }
 </style>
