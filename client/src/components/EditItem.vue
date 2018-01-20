@@ -3,7 +3,7 @@
     <h1>Edit item</h1>
     <input v-model="name" @input="updatedModel"/> <br/>
     <TagsInput v-model="tags" @input="updatedModel"/>
-    <textarea v-model="description" @input="updatedModel"/> <br/>
+    <MarkdownInput v-model="description" @input="updatedModel"/>
     <span>{{status}}</span>
     <Thumbnail v-for="image in images" :image="image" :key="image.filename"/>
 
@@ -20,12 +20,14 @@ import _ from 'lodash'
 import ImageUploader from './ImageUploader'
 import Thumbnail from './Thumbnail'
 import TagsInput from './TagsInput'
+import MarkdownInput from './MarkdownInput'
 
 export default {
   components: {
     ImageUploader,
     Thumbnail,
     TagsInput,
+    MarkdownInput,
   },
   props: ['item_id'],
   data () {
