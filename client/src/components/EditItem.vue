@@ -5,6 +5,7 @@
     <textarea v-model="description"/> <br/>
     <button @click="addItem()">Update item</button> <br/>
     <span>{{status}}</span>
+    <Thumbnail v-for="image in images" :image="image" :key="image.filename"/>
 
     <h2>Upload images</h2>
     <ImageUploader @uploaded="addImage"/>
@@ -15,10 +16,12 @@
 
 <script>
 import ImageUploader from './ImageUploader'
+import Thumbnail from './Thumbnail'
 
 export default {
   components: {
     ImageUploader,
+    Thumbnail,
   },
   props: ['item_id'],
   data () {
@@ -35,25 +38,34 @@ export default {
       .then(j => {
         this.name = j.name
         this.description = j.description
+        this.images = j.images.map(i => ({
+          filename: i,
+        }))
         this.status = 'downloaded'
+        console.log(j)
       })
   },
   methods: {
     addItem () {
       this.status = 'sending'
 
-      let formData = new FormData()
-      formData.append('name', this.name)
-      formData.append('description', this.description)
       fetch('/api/item/' + this.item_id + '/update', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         method: 'POST',
-        body: formData,
+        body: JSON.stringify({
+          name: this.name,
+          description: this.description,
+          images: this.images.map(i => i.filename),
+        }),
       })
         .then(r => { this.status = 'done' })
         .catch(r => { this.status = 'fail' })
     },
     addImage (image) {
       console.log(image)
+      this.images.push(image)
     },
   },
 }

@@ -64,6 +64,7 @@ def item_to_json(item):
         'item_id': item.doc_id,
         'name': get_or_default(item, 'name', ''),
         'description': get_or_default(item, 'description', ''),
+        'images': get_or_default(item, 'images', []),
     }
 
 
@@ -84,8 +85,9 @@ def new_item():
 @app.route('/api/item/<int:item_id>/update', methods=['POST'])
 def update_item(item_id):
     items.update({
-        'name': request.form['name'],
-        'description': request.form['description'],
+        'name': request.json['name'],
+        'description': request.json['description'],
+        'images': request.json['images'],
         'filled': True,
     }, doc_ids=[item_id])
     return jsonify({})
