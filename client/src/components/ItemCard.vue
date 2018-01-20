@@ -1,7 +1,7 @@
 <template>
   <div class="ItemCard" @click="go">
     <Thumbnail :image="{filename: item.images[0]}"/>
-    <scope class="name">{{item.name}}</scope>
+    <span class="name">{{item.name}}</span>
   </div>
 </template>
 
