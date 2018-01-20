@@ -2,6 +2,7 @@
   <div class="root">
     <h1>Edit item</h1>
     <input v-model="name"/> <br/>
+    <TagsInput v-model="tags"/>
     <textarea v-model="description"/> <br/>
     <button @click="addItem()">Update item</button> <br/>
     <span>{{status}}</span>
@@ -17,11 +18,13 @@
 <script>
 import ImageUploader from './ImageUploader'
 import Thumbnail from './Thumbnail'
+import TagsInput from './TagsInput'
 
 export default {
   components: {
     ImageUploader,
     Thumbnail,
+    TagsInput,
   },
   props: ['item_id'],
   data () {
@@ -29,6 +32,7 @@ export default {
       name: '',
       description: '',
       status: 'downloading',
+      tags: ['test1', 'abc2', 'lol3'],
       images: [],
     }
   },
