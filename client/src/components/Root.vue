@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <h1>Wheere2</h1>
-    <router-link to="/new-item">Add item</router-link>
+    <router-link to="/new-item">New item</router-link>
     <div>{{data}}</div>
   </div>
 </template>
