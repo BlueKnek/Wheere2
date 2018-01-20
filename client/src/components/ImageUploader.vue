@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <input @change="addImageFiles($event.target.files)" type="file" accept="image/*" capture="camera"/> <br/>
-    <div v-for="image in images" :key="image.name">
+    <div v-if="image.status !== 'success'" v-for="image in images" :key="image.name">
       <Thumbnail :image="image"/>
       {{image.status}}
     </div>
