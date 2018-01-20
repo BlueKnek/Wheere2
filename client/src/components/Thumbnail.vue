@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <img v-if="url" :src="url"/>
-  </div>
+  <img v-if="url" :src="url"/>
 </template>
 
 <script>
