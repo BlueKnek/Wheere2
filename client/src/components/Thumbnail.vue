@@ -3,10 +3,15 @@
 </template>
 
 <script>
+import noImg from '@/assets/no-img.png'
+
 export default {
   props: ['image'],
   computed: {
     url () {
+      if ((!this.image.url) && (!this.image.filename)) {
+        return noImg
+      }
       return this.image.url || '/api/img/' + this.image.filename
     },
   },
