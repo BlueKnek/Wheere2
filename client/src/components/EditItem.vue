@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <h1>Add item</h1>
+    <h1>Edit item</h1>
     <input v-model="name"/> <br/>
     <textarea v-model="description"/> <br/>
     <button @click="addItem()">Update item</button> <br/>
