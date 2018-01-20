@@ -1,5 +1,5 @@
 <template>
-  <div class="ItemCard">
+  <div class="ItemCard" @click="go">
     <Thumbnail :image="{filename: item.images[0]}"/>
     <scope class="name">{{item.name}}</scope>
   </div>
@@ -13,6 +13,11 @@ export default {
     Thumbnail,
   },
   props: ['item'],
+  methods: {
+    go () {
+      this.$router.push({name: 'EditItem', params: {item_id: this.item.item_id}})
+    },
+  },
 }
 </script>
 
@@ -27,6 +32,7 @@ export default {
     border-radius: var(--space-inside);
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: all 0.5s;
+    cursor: pointer;
   }
 
   .ItemCard:hover {
