@@ -1,10 +1,9 @@
 <template>
   <div class="root">
     <h1>Edit item</h1>
-    <input v-model="name"/> <br/>
-    <TagsInput v-model="tags"/>
-    <textarea v-model="description"/> <br/>
-    <button @click="addItem()">Update item</button> <br/>
+    <input v-model="name" @input="updatedModel"/> <br/>
+    <TagsInput v-model="tags" @input="updatedModel"/>
+    <textarea v-model="description" @input="updatedModel"/> <br/>
     <span>{{status}}</span>
     <Thumbnail v-for="image in images" :image="image" :key="image.filename"/>
 
@@ -16,6 +15,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 import ImageUploader from './ImageUploader'
 import Thumbnail from './Thumbnail'
 import TagsInput from './TagsInput'
@@ -51,7 +52,7 @@ export default {
       })
   },
   methods: {
-    addItem () {
+    updateItem () {
       this.status = 'sending'
 
       fetch('/api/item/' + this.item_id + '/update', {
@@ -69,8 +70,16 @@ export default {
         .then(r => { this.status = 'done' })
         .catch(r => { this.status = 'fail' })
     },
+    debouncedUpdateItem: _.debounce(function () {
+      this.updateItem()
+    }, 500),
     addImage (image) {
       this.images.push(image)
+      this.updatedModel()
+    },
+    updatedModel () {
+      this.status = 'updated'
+      this.debouncedUpdateItem()
     },
   },
 }
