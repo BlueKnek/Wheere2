@@ -42,7 +42,6 @@ export default {
           filename: i,
         }))
         this.status = 'downloaded'
-        console.log(j)
       })
   },
   methods: {
@@ -64,7 +63,6 @@ export default {
         .catch(r => { this.status = 'fail' })
     },
     addImage (image) {
-      console.log(image)
       this.images.push(image)
     },
   },
