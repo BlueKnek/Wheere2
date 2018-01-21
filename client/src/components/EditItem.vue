@@ -10,7 +10,7 @@
         Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
 
       h2 Upload images
-      ImageUploader @uploaded="addImage"
+      ImageUploader(@uploaded="addImage")
 
       h2(v-if="status === 'downloading'") Downloading...
 </template>
