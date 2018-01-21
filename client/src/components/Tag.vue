@@ -1,10 +1,23 @@
 <template lang="pug">
-  span.Tag {{value}}
+  span.Tag(:style="style") {{value}}
 </template>
 
 <script>
+import ColorHash from 'color-hash'
+let colorHash = new ColorHash()
+
+function between(a, b, c){
+  return a+c*(b-a)
+}
+
 export default {
   props: ['value'],
+  computed: {
+    style () {
+      let hsl = colorHash.hsl(this.value)
+      return `background-color: hsl(${hsl[0]}, ${hsl[1]*100}%, 90%);`
+    },
+  },
 }
 </script>
 
