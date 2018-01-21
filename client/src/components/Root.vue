@@ -2,7 +2,7 @@
   <div class="root">
     <Header/>
     <div class="page">
-      <ItemCard v-for="item in data.items" :item="item" :key="item.item_id"/>
+      <ItemCard v-for="{itemId, itemData} in itemsList" :item="itemData" :key="itemId"/>
     </div>
   </div>
 </template>
@@ -10,20 +10,16 @@
 <script>
 import Header from './Header'
 import ItemCard from './ItemCard'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Header,
     ItemCard,
   },
-  data () {
-    fetch('/api/data.json')
-      .then(r => r.json())
-      .then(j => { this.data = j })
-    return {
-      data: false,
-    }
-  },
+  computed: mapGetters([
+    'itemsList',
+  ]),
 }
 </script>
 

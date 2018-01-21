@@ -69,11 +69,25 @@ def item_to_json(item):
     }
 
 
+def item_to_json2(item):
+    return {
+        'itemId': item.doc_id,
+        'itemData': item,
+    }
+
+
 @app.route('/api/data.json')
 def data_json():
     return jsonify({
         'hello': 'world',
         'items': [item_to_json(i) for i in items.all() if 'filled' in i],
+    })
+
+
+@app.route('/api/items.json')
+def items_json():
+    return jsonify({
+        'itemsList': [item_to_json2(i) for i in items.all() if 'filled' in i],
     })
 
 
