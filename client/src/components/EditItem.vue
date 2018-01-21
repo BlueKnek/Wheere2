@@ -68,7 +68,7 @@ export default {
           name: this.name,
           tags: this.tags,
           description: this.description,
-          images: this.images.map(i => i.filename),
+          images: this.images,
         }),
       })
         .then(r => { this.status = 'done' })
