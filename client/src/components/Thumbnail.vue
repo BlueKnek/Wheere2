@@ -6,13 +6,16 @@
 import noImg from '@/assets/no-img.png'
 
 export default {
-  props: ['image'],
+  props: ['image', 'filename'],
   computed: {
     url () {
-      if ((!this.image.url) && (!this.image.filename)) {
-        return noImg
+      if (this.filename) {
+        return '/api/img/' + this.filename
       }
-      return this.image.url || '/api/img/' + this.image.filename
+      if (this.image && this.image.url) {
+        return this.image.url
+      }
+      return noImg
     },
   },
 }

@@ -6,7 +6,7 @@
       <TagsInput v-model="tags" @input="updatedModel"/>
       <MarkdownInput v-model="description" @input="updatedModel"/>
       <span>{{status}}</span>
-      <Thumbnail v-for="image in images" :image="image" :key="image.filename"/>
+      <Thumbnail v-for="filename in images" :filename="filename" :key="filename"/>
 
       <h2>Upload images</h2>
       <ImageUploader @uploaded="addImage"/>
@@ -51,9 +51,7 @@ export default {
         this.name = j.name
         this.tags = j.tags
         this.description = j.description
-        this.images = j.images.map(i => ({
-          filename: i,
-        }))
+        this.images = j.images
         this.status = 'downloaded'
       })
   },
@@ -80,7 +78,7 @@ export default {
       this.updateItem()
     }, 500),
     addImage (image) {
-      this.images.push(image)
+      this.images.push(image.filename)
       this.updatedModel()
     },
     updatedModel () {
