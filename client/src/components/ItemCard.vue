@@ -16,10 +16,10 @@ export default {
     Thumbnail,
     Tags,
   },
-  props: ['item'],
+  props: ['item', 'itemId'],
   methods: {
     go () {
-      this.$router.push({name: 'EditItem', params: {item_id: this.item.item_id}})
+      this.$router.push({name: 'EditItem', params: {item_id: this.itemId}})
     },
   },
 }
