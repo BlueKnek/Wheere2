@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Root from '@/components/Root'
+import ItemsList from '@/components/ItemsList'
 import EditItem from '@/components/EditItem'
 import NewItem from '@/components/NewItem'
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Root',
-      component: Root,
+      name: 'ItemsList',
+      component: ItemsList,
     },
     {
       path: '/item/:item_id/edit',
