@@ -1,15 +1,19 @@
 <template lang="pug">
   div.ItemCard(@click="go")
     Thumbnail(:filename="item.images[0]")
-    span.name {{item.name}}
+    div.ItemCard-info
+      span.name {{item.name}}
+      Tags(:value="item.tags")
 </template>
 
 <script>
 import Thumbnail from './Thumbnail'
+import Tags from './Tags'
 
 export default {
   components: {
     Thumbnail,
+    Tags,
   },
   props: ['item'],
   methods: {
@@ -39,6 +43,11 @@ export default {
 
   .ItemCard > * {
     margin: var(--space-inside);
+  }
+
+  .ItemCard-info {
+    display: flex;
+    flex-direction: column;
   }
 
   .name {
