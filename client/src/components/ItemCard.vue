@@ -1,8 +1,7 @@
-<template>
-  <div class="ItemCard" @click="go">
-    <Thumbnail :filename="item.images[0]"/>
-    <span class="name">{{item.name}}</span>
-  </div>
+<template lang="pug">
+  div.ItemCard(@click="go")
+    Thumbnail(:filename="item.images[0]")
+    span.name {{item.name}}
 </template>
 
 <script>
