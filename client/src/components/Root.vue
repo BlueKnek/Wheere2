@@ -1,10 +1,8 @@
-<template>
-  <div class="root">
-    <Header/>
-    <div class="page">
-      <ItemCard v-for="{itemId, itemData} in itemsList" :item="itemData" :key="itemId"/>
-    </div>
-  </div>
+<template lang="pug">
+  div.root
+    Header
+    div.page
+      ItemCard(v-for="{itemId, itemData} in itemsList", :item="itemData", :key="itemId")
 </template>
 
 <script>
