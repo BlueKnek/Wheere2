@@ -24,6 +24,7 @@ export default {
 
 <style scoped>
   .Tag {
+    display: inline-block;
     background-color: #CCC;
     font-size: 0.75rem;
     padding: 0.125rem 0.3rem;

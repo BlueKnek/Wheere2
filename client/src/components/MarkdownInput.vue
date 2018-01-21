@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.MarkdownInput
     div(ref="editor")
 </template>
 

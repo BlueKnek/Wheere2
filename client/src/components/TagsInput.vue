@@ -1,7 +1,7 @@
 <template lang="pug">
   div.TagsInput
     Tags(:value="value" @click="removeTag")
-    input.input(v-model="newTag", @keyup="checkIfEnter")
+    input.input(v-model="newTag", @keyup="checkIfEnter", placeholder="New tag")
 </template>
 
 <script>
@@ -43,9 +43,17 @@ export default {
 <style scoped>
   .TagsInput {
     display: flex;
-    border: 1px solid gray;
+    border: var(--input-border);
+    padding: var(--input-padding);
+    transition: 0.2s all;
   }
+
+  .TagsInput:hover, .TagsInput:focus-within {
+    border-color: var(--color-active);
+  }
+
   .input {
     flex-grow: 1;
+    border: none;
   }
 </style>

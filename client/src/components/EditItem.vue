@@ -2,12 +2,12 @@
   div
     Header
     div.content
-      input(v-model="name", @input="updatedModel")
-      br
+      input(v-model="name", @input="updatedModel", placeholder="Item name")
       TagsInput(v-model="tags", @input="updatedModel")
       MarkdownInput(v-model="description", @input="updatedModel")
       span {{status}}
-      Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
+      div.thumbnails
+        Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
 
       h2 Upload images
       ImageUploader @uploaded="addImage"
@@ -90,10 +90,30 @@ export default {
 
 <style scoped>
   .content {
+    display: flex;
+    flex-direction: column;
     max-width: 50em;
     margin: auto;
     background-color: var(--background-color);
     padding: 1rem;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   }
+
+  .content > * {
+    margin: 0.25rem;
+  }
+
+  .content input {
+    font-size: 1.5rem;
+
+    border: var(--input-border);
+    padding: var(--input-padding);
+
+    transition: 0.2s all;
+  }
+
+  .content input:hover, .content input:focus {
+    border-color: var(--color-active);
+  }
+
 </style>
