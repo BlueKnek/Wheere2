@@ -2,10 +2,10 @@
   div
     Header
     div.content
-      input(v-model="name", @input="updateModel")
+      input(v-model="name", @input="updatedModel")
       br
-      TagsInput(v-model="tags", @input="updateModel")
-      MarkdownInput(v-model="description", @input="updateModel")
+      TagsInput(v-model="tags", @input="updatedModel")
+      MarkdownInput(v-model="description", @input="updatedModel")
       span {{status}}
       Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
 
