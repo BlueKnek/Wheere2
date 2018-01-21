@@ -1,12 +1,16 @@
 <template lang="pug">
   div.TagsInput
-    span.tags
-      span.tag(v-for="tag in value", @click="removeTag(tag)") {{tag}}
+    Tags(:value="value" @click="removeTag")
     input.input(v-model="newTag", @keyup="checkIfEnter")
 </template>
 
 <script>
+import Tags from './Tags'
+
 export default {
+  components: {
+    Tags,
+  },
   data () {
     return {
       newTag: '',
@@ -19,6 +23,7 @@ export default {
       this.$emit('input', newValue)
     },
     removeTag (tag) {
+      console.log(tag)
       this.changeTo(this.value.filter(v => v !== tag))
     },
     checkIfEnter (event) {
@@ -39,14 +44,6 @@ export default {
   .TagsInput {
     display: flex;
     border: 1px solid gray;
-  }
-  .tag {
-    display: inline-block;
-    background-color: #EEE;
-    font-size: 0.75rem;
-    margin: 0.25rem;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
   }
   .input {
     flex-grow: 1;

@@ -1,6 +1,6 @@
 <template lang="pug">
   div.Tags
-    Tag(v-for="tag in value", :value="tag", :key="tag")
+    Tag(v-for="tag in value", :value="tag", :key="tag", @click="click(tag)")
 </template>
 
 <script>
@@ -11,5 +11,11 @@ export default {
     Tag,
   },
   props: ['value'],
+  methods: {
+    click (tag) {
+      console.log('click', tag)
+      this.$emit('click', tag)
+    },
+  },
 }
 </script>

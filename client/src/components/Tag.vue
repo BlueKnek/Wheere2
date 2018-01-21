@@ -1,5 +1,5 @@
 <template lang="pug">
-  span.Tag(:style="style") {{value}}
+  span.Tag(:style="style", @click="click") {{value}}
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
     style () {
       let hsl = colorHash.hsl(this.value)
       return `background-color: hsl(${hsl[0]}, ${hsl[1] * 100}%, 90%);`
+    },
+  },
+  methods: {
+    click () {
+      this.$emit('click')
     },
   },
 }
