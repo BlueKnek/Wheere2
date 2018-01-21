@@ -1,19 +1,18 @@
-<template>
-  <div>
-    <Header/>
-    <div class="content">
-      <input v-model="name" @input="updatedModel"/> <br/>
-      <TagsInput v-model="tags" @input="updatedModel"/>
-      <MarkdownInput v-model="description" @input="updatedModel"/>
-      <span>{{status}}</span>
-      <Thumbnail v-for="filename in images" :filename="filename" :key="filename"/>
+<template lang="pug">
+  div
+    Header
+    div.content
+      input(v-model="name", @input="updateModel")
+      br
+      TagsInput(v-model="tags", @input="updateModel")
+      MarkdownInput(v-model="description", @input="updateModel")
+      span {{status}}
+      Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
 
-      <h2>Upload images</h2>
-      <ImageUploader @uploaded="addImage"/>
+      h2 Upload images
+      ImageUploader @uploaded="addImage"
 
-      <h2 v-if="status === 'downloading'">Downloading ...</h2>
-    </div>
-  </div>
+      h2(v-if="status === 'downloading'") Downloading...
 </template>
 
 <script>
