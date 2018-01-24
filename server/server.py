@@ -1,11 +1,14 @@
 from flask import Flask, jsonify, request, send_from_directory
 from tinydb import TinyDB, Query
 from werkzeug.utils import secure_filename
+import socketio
+import eventlet
 import os
 
 UPLOADED_IMAGES = 'uploaded_images'
 
 app = Flask(__name__)
+sio = socketio.Server()
 db = TinyDB('db.json')
 items = db.table('items')
 
@@ -93,22 +96,103 @@ def items_json():
 
 @app.route('/api/new-item', methods=['POST'])
 def new_item():
-    item_id = items.insert({})
+    item_id = new_entry('items', {})
     return jsonify({'item_id': item_id})
 
 
 @app.route('/api/item/<int:item_id>/update', methods=['POST'])
 def update_item(item_id):
-    items.update({
+    update_entry('items', item_id, {
         'name': request.json['name'],
         'tags': request.json['tags'],
         'description': request.json['description'],
         'images': request.json['images'],
         'filled': True,
-    }, doc_ids=[item_id])
+    })
     return jsonify({})
 
 
 @app.route('/api/item/<int:item_id>.json')
 def item_json(item_id):
     return jsonify(item_to_json(items.get(doc_id=item_id)))
+
+
+# Any table api
+def get_table(table_name):
+    return db.table(table_name)
+
+
+def new_entry(table_name, data):
+    table = get_table(table_name)
+    doc_id = table.insert(data)
+    sio.emit('new', {
+        'tableName': table_name,
+        'id': doc_id,
+        'data': data,
+    }, room=table_name)
+    return doc_id
+
+
+def update_entry(table_name, doc_id, data):
+    table = get_table(table_name)
+    table.update(data, doc_ids=[doc_id])
+    sio.emit('update', {
+        'tableName': table_name,
+        'id': doc_id,
+        'data': data,
+    }, room=table_name)
+
+
+def get_entry(table_name, doc_id):
+    table = get_table(table_name)
+    return table.get(doc_id=doc_id)
+
+
+def get_list(table_name):
+    table = get_table(table_name)
+    return [{'id': i.doc_id, 'data': i} for i in table.all()]
+
+
+@sio.on('connect')
+def connect(sid, environ):
+    print('connect ', sid)
+
+
+@sio.on('disconnect')
+def disconnect(sid):
+    print('disconnect ', sid)
+
+
+@sio.on('listen')
+def listen(sid, d):
+    print('listen', sid, d)
+    sio.enter_room(sid, d['tableName'])
+
+
+@sio.on('new')
+def listen(sid, d):
+    print('new', sid, d)
+    return new_entry(d['tableName'], d['data'])
+
+
+@sio.on('update')
+def listen(sid, d):
+    print('update', sid, d)
+    return update_entry(d['tableName'], d['id'], d['data'])
+
+
+@sio.on('get')
+def listen(sid, d):
+    print('get', sid, d)
+    return get_entry(d['tableName'], d['id'])
+
+
+@sio.on('list')
+def listen(sid, d):
+    print('list', sid, d)
+    return get_list(d['tableName'])
+
+
+if __name__ == '__main__':
+    app = socketio.Middleware(sio, app)
+    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
