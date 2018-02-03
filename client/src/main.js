@@ -20,14 +20,26 @@ const store = new Vuex.Store({
     },
     updateItem: (state, {id, data}) => {
       let entry = state.itemsList.find(entry => entry.id === id)
-      if (entry) {
-        Object.keys(data).forEach(key => {
+      let keys = Object.keys(data)
+      let redo = keys.some(key =>
+        (entry.data[key] === undefined) &&
+        (data[key] !== undefined)
+      )
+
+      if (redo) {
+        entry.data = {
+          ...entry.data,
+          ...data,
+        }
+      } else {
+        keys.forEach(key => {
           let value = data[key]
           entry.data[key] = value
         })
-      } else {
-        state.itemsList.push({id, data})
       }
+    },
+    newItem: (state, {id, data}) => {
+      state.itemsList.push({id, data})
     },
   },
   getters: {
@@ -37,10 +49,13 @@ const store = new Vuex.Store({
           ({id, data}) => ({itemId: id, itemData: data})
         )
     },
+    item: state => id => {
+      return state.find(item => item.id === id)
+    },
   },
 })
 
-let socket = io()
+export let socket = io()
 
 socket.on('connect', () => {
   socket.emit('listen', {tableName: 'items'})
@@ -53,6 +68,12 @@ socket.on('connect', () => {
 socket.on('update', ({tableName, id, data}) => {
   if (tableName === 'items') {
     store.commit('updateItem', {id, data})
+  }
+})
+
+socket.on('new', ({tableName, id, data}) => {
+  if (tableName === 'items') {
+    store.commit('newItem', {id, data})
   }
 })
 

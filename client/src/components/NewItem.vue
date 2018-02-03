@@ -3,11 +3,21 @@
 </template>
 
 <script>
+
+import {socket} from '../main'
+
+const emptyItemData = {
+  name: '',
+  tags: [],
+  description: '',
+  images: [],
+}
+
 export default {
   mounted () {
-    fetch('/api/new-item', { method: 'POST' })
-      .then(r => r.json())
-      .then(j => { this.$router.replace({ name: 'EditItem', params: {item_id: j.item_id} }) })
+    socket.emit('new', {tableName: 'items', data: emptyItemData}, id => {
+      this.$router.replace({ name: 'EditItem', params: {item_id: id} })
+    })
   },
 }
 </script>
