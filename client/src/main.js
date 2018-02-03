@@ -50,7 +50,7 @@ const store = new Vuex.Store({
         )
     },
     item: state => id => {
-      return state.find(item => item.id === id)
+      return state.itemsList.find(item => item.id === id)
     },
   },
 })
@@ -59,8 +59,7 @@ export let socket = io()
 
 socket.on('connect', () => {
   socket.emit('listen', {tableName: 'items'})
-  socket.emit('list', {tableName: 'items'}, list => {
-    let itemsList = list.filter(({data}) => data.filled)
+  socket.emit('list', {tableName: 'items'}, itemsList => {
     store.commit('setItemsList', {itemsList})
   })
 })
