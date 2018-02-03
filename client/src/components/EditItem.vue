@@ -2,27 +2,24 @@
   div
     Header
     div.content
-      input(v-model="name", @input="updatedModel", placeholder="Item name")
-      TagsInput(v-model="tags", @input="updatedModel")
-      MarkdownInput(v-model="description", @input="updatedModel")
-      span {{status}}
+      input(v-model="name", @input="updatedField('name')", placeholder="Item name")
+      TagsInput(v-model="tags", @input="updatedField('tags')")
+      MarkdownInput(v-model="description", @input="updatedField('description')")
       div.thumbnails
         Thumbnail(v-for="filename in images", :filename="filename", :key="filename")
 
       h2 Upload images
       ImageUploader(@uploaded="addImage")
-
-      h2(v-if="status === 'downloading'") Downloading...
 </template>
 
 <script>
-import _ from 'lodash'
-
 import Header from './Header'
 import ImageUploader from './ImageUploader'
 import Thumbnail from './Thumbnail'
 import TagsInput from './TagsInput'
 import MarkdownInput from './MarkdownInput'
+
+import {socket} from '../main'
 
 export default {
   components: {
@@ -37,7 +34,6 @@ export default {
     return {
       name: '',
       description: '',
-      status: 'downloading',
       tags: [],
       images: [],
     }
@@ -46,43 +42,23 @@ export default {
     fetch('/api/item/' + this.item_id + '.json')
       .then(r => r.json())
       .then(j => {
-        console.log(j)
         this.name = j.name
         this.tags = j.tags
         this.description = j.description
         this.images = j.images
-        this.status = 'downloaded'
       })
   },
   methods: {
-    updateItem () {
-      this.status = 'sending'
-
-      fetch('/api/item/' + this.item_id + '/update', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          name: this.name,
-          tags: this.tags,
-          description: this.description,
-          images: this.images,
-        }),
-      })
-        .then(r => { this.status = 'done' })
-        .catch(r => { this.status = 'fail' })
+    updatedField (name) {
+      socket.emit('update', {
+        tableName: 'items',
+        id: this.item_id,
+        data: {[name]: this[name]}},
+      )
     },
-    debouncedUpdateItem: _.debounce(function () {
-      this.updateItem()
-    }, 500),
     addImage (image) {
       this.images.push(image.filename)
-      this.updatedModel()
-    },
-    updatedModel () {
-      this.status = 'updated'
-      this.debouncedUpdateItem()
+      this.updatedField('images')
     },
   },
 }
